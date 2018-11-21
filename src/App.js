@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Screen from './Screen';
 import Keyboard from './Keyboard';
+import Expression from './Expression'
 
 
 const NB_ERRORS = 0;
@@ -33,6 +34,10 @@ class App extends Component {
         <Screen
           nbAttempts={NB_ATTEMPTS} 
           nbErrors={NB_ERRORS}
+        />
+
+        <Expression 
+          word = 'Exemple'
         />
 
         <Keyboard 

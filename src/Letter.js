@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import './Letter.css';
+
 
 const UNKNOWN_LETTER = '_';
 
 const Letter = ({letter, feedback}) => (
-    <span className="">
+    <span className="letter">
         {
-            feedback === 'unkown' ?
+            feedback === 'unknown' ?
                 UNKNOWN_LETTER                
             :
                 letter
@@ -20,6 +22,10 @@ Letter.propTypes = {
         'known',
         'unknown', 
     ]).isRequired
+}
+
+Letter.defaultProps = {
+    feedback: "unknown"
 }
 
 export default Letter;
