@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Screen from './Screen';
+
+
+const NB_ERRORS = 0;
+const NB_ATTEMPTS = 10;
 
 class App extends Component {
   render() {
@@ -19,7 +24,14 @@ class App extends Component {
               </a>
           </p>
         </header>
+        
+        <Screen
+          nbAttempts={NB_ATTEMPTS} 
+          nbErrors={3}
+        />
+        
       </div>
+
     );
   }
 }

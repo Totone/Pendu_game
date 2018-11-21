@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Screen = ({nbAttempts, nbErrors}) => (
-    <section>
+    <section className="Screen">
         <img
-            src={require(`../images/state${nbErrors}.png`)} 
+            src= {require(`./images/state${nbErrors}.png`)}
             className="RoundState" 
             alt= {`Encore ${nbAttempts - nbErrors} tentatives!`}
         />
     </section>
 )
 
-Screen.PropTypes = {
+Screen.propTypes = {
     nbErrors: PropTypes.number.isRequired,
 }
 
-export default Screen
+export default Screen;
