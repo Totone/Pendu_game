@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import './Key.css'
 
 const Key = ({letter, feedback, clickEvent}) => (
-    <span className={`key-${feedback}`}>
+    <span 
+        className={`key-${feedback}`}
+        onClick={() => clickEvent(letter, feedback)}
+    >
         {letter}
     </span>
 )

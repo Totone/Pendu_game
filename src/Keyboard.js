@@ -4,14 +4,15 @@ import Key from './Key'
 import './Keyboard.css'
 
 
-const Keyboard = ({ keyList }) => (
+const Keyboard = ({ keyList, keysClickEvent }) => (
     <div className="keyboard">
         {
-            Array.from(keyList).map((letter, index) => (    
+            Array.from(keyList).map((letter) => (    
                 <Key
-                    key={index}
+                    key={letter}
                     letter={letter} 
                     feedback="unclicked"
+                    clickEvent={() => keysClickEvent(Key.letter, Key.feedback)}
                 />
             ))
         }

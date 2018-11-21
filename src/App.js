@@ -4,15 +4,18 @@ import './App.css';
 import Screen from './Screen';
 import Keyboard from './Keyboard';
 import Expression from './Expression'
+import Key from './Key'
 
 
-const NB_ERRORS = 0;
+let NB_ERRORS = 0;
 const NB_ATTEMPTS = 10;
 const AVAILABLE_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class App extends Component {
-  handleKeyClick() {
+  handleKeyClick = (letter, feedback) => {
+    console.log (`Clic sur la lettre ${letter} en position ${feedback}`); 
   }
+
   render() {
     const keysArray = ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ']
     return (
@@ -40,15 +43,38 @@ class App extends Component {
           word = 'Exemple'
         />
 
-        <Keyboard 
+      <div className="keyboard">
+      { Array.from(keysArray[0]).map((letter) => (    
+        <Key
+        key={letter}
+        letter={letter} 
+        feedback="unclicked"
+        clickEvent={this.handleKeyClick}
+        />
+        ))
+      }
+      </div>
+      <div className="keyboard">
+      {
+        Array.from(keysArray[1]).map((letter) => (    
+          <Key
+          key={letter}
+          letter={letter} 
+          feedback="unclicked"
+          clickEvent={this.handleKeyClick}
+          />
+          ))
+        }
+      </div>
+        {/*<Keyboard 
           keyList = {keysArray[0]}
+          keysClickEvent={this.handleKeyClick}
         />
         <Keyboard 
           keyList = {keysArray[1]}
+          keysClickEvent={this.handleKeyClick}
         />
-        
-        
-
+        */}
       </div>
 
     );
