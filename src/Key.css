@@ -1,0 +1,21 @@
+.key-success, .key-failure, .key-unclicked {
+    border: 1px solid black;
+    margin: 0.1em;
+    padding: 0.2em;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.key-unclicked {
+    color: darkgrey;
+    background-color: rgb(73, 73, 73);
+}
+
+.key-success {
+    color: green;
+    background-color: darkgrey;
+}
+.key-failure {
+    color: rgb(139, 0, 0);
+    background-color: darkgrey;
+}
