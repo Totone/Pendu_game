@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Screen from './Screen';
-import Key from './Key'
+import Keyboard from './Keyboard';
 
 
 const NB_ERRORS = 0;
 const NB_ATTEMPTS = 10;
+const AVAILABLE_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class App extends Component {
   handleKeyClick() {
   }
   render() {
+    const keysArray = ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ']
     return (
       <div className="App">
         <header className="App-header">
@@ -33,22 +35,15 @@ class App extends Component {
           nbErrors={NB_ERRORS}
         />
 
-        <Key
-          letter="M"
-          feedback="unclicked"
-          clickEvent= {this.handleKeyClick}
+        <Keyboard 
+          keyList = {keysArray[0]}
         />
-        <Key
-          letter="N"
-          feedback="success"
-          clickEvent= {this.handleKeyClick}
-        />
-        <Key
-          letter="O"
-          feedback="failure"
-          clickEvent= {this.handleKeyClick}
+        <Keyboard 
+          keyList = {keysArray[1]}
         />
         
+        
+
       </div>
 
     );
