@@ -11,8 +11,36 @@ let NB_ERRORS = 0;
 const NB_ATTEMPTS = 10;
 
 class App extends Component {
+  state = {
+    nbErrors: 0,
+    triedIndices: [],
+    goodIndicies: [],
+  }
+
   handleKeyClick = (letter, feedback, index) => {
     console.log (`Clic sur la lettre ${letter} à l'index ${index} en position ${feedback}`); 
+  /*
+    Si index est dans triedKeys
+      -> return
+    Sinon
+      triedKeys.push(index)
+  */
+  }
+
+  /**
+   * Afficher les buttons correspondant aux lettres
+   * 
+   */
+  getFeedbackForKey() {
+    /* 
+      Si l'index de la key est dans triedKeys:
+        - Si l'index est dans goodKeys
+          -> return "success"
+        -> Sinon
+          -> return "failure"
+      Sinon
+        -> return "unclicked"
+    */
   }
 
   render() {
@@ -43,11 +71,11 @@ class App extends Component {
         />
 
         <div className="keyboard">
-        { Array.from(keysArray[0]).map((letter, index) => (    
+        { Array.from(keysArray[0]).map((value, index) => (    
           <Key
-          key={letter}
+          key={value}
           index={index}
-          letter={letter} 
+          letter={value} 
           feedback="unclicked"
           clickEvent={this.handleKeyClick}
           />
@@ -56,11 +84,11 @@ class App extends Component {
         </div>
         <div className="keyboard">
         {
-          Array.from(keysArray[1]).map((letter, index) => (    
+          Array.from(keysArray[1]).map((value, index) => (    
             <Key
-            key={letter}
+            key={value}
             index={index+13}
-            letter={letter} 
+            letter={value} 
             feedback="unclicked"
             clickEvent={this.handleKeyClick}
             />
