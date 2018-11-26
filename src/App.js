@@ -1,28 +1,64 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+import shuffle from 'lodash.shuffle';
+
 import Screen from './Screen';
 import './Keyboard.css';
-import Expression from './Expression'
-import Key from './Key'
+import Key from './Key';
+import Letter from './Letter';
 
 
-let NB_ERRORS = 0;
 const NB_ATTEMPTS = 10;
+const WORDS = [
+    'PARI', 
+    'JUVENILE', 
+    'TOXICO', 
+    'PHILANTROPIQUE', 
+    'BAZAR', 
+    'DJORKAEFF']
 
-class App extends Component {
+class App extends Component {    
     state = {
         nbErrors: 0,
-        triedIndices: [2,5,8,12,15,23, 22,1, 4,9,14],
-        goodIndices: [2,5,12,14, 23],
         triedLetters: ['S', 'X'],
         goodLetters: ['B', 'L', 'E', 'S'],
         keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
+        actualWord: 'ZEUBI'
     }
 
-    /*
-    Réagir au clic de la souris
-    */
+    initState() {
+        const newWord = WORDS[Math.ceil(Math.random*100*WORDS.length)];
+        const arrayWord = Array.from(newWord);
+        this.setState({
+            nbErrors: 0,
+            triedLetters: [],
+            goodLetters: arrayWord,
+            keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
+            actualWord: newWord
+            }); 
+            
+    }
+
+    /**
+     * Transformer l'expression à trouver en tableau
+     */ 
+    getGoodLettersArray(expression) {
+        return Array.from(expression);
+    }
+
+    /**
+     * Réaction au clic d'une key
+     * 
+     * Si la key est déjà cliquée y'a rien à faire 
+     * Sinon on ajoute la key dans triedLetters[]
+     * et on ajoute une erreur si la key n'est pas dans goodLetters[]
+     * 
+     * A faire:
+     * - état du jeu (gagné?perdu?) à la fin
+     *      appeler une nouvelle fonction et faire tous les bails de vérif
+     */
     handleKeyClick = (letter, feedback, index) => {
         const { goodLetters, triedLetters, nbErrors } = this.state;
 
@@ -50,8 +86,16 @@ class App extends Component {
 
     /**
      * Afficher les buttons correspondant aux lettres
+     * 
+     * 3 possibilités:
+     *  - si la valeur du button n'est pas dans triedLetters[] 
+     *      on return 'unclicked'
+     *  - sinon:
+     *      - si la valeur du button est dans goodLetters[]
+     *          on return 'success'
+     *      - sinon on return 'failure'
      */
-    getFeedbackForKey(letter, index) {
+    getFeedbackForKey(letter) {
         const {triedLetters, goodLetters} = this.state;
 
         for (var val1 in triedLetters) {
@@ -65,6 +109,11 @@ class App extends Component {
         }
         return 'unclicked';
     }
+
+    /**
+     * Donner le feedback de chaque lettre du mot à trouver
+     */
+    getFeedbackForLetter
 
     render() {
         const { keysArray } = this.state;
@@ -89,9 +138,17 @@ class App extends Component {
                   nbErrors={this.state.nbErrors}
                 />
 
-                <Expression 
-                  word = 'Exemples'
-                />
+                <div className="expression">
+                    {
+                        Array.from(this.state.actualWord).map((letter, index, feedbackFunc) => (
+                            <Letter
+                              key={index}
+                              letter={letter}
+                              feedback={feedbackFunc}
+                            />
+                        ))
+                    }
+                </div>
 
                 <div className="keyboard">
                     { 
