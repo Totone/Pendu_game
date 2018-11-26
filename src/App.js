@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Screen from './Screen';
-import Keyboard from './Keyboard';
+import './Keyboard.css';
 import Expression from './Expression'
 import Key from './Key'
 
 
 let NB_ERRORS = 0;
 const NB_ATTEMPTS = 10;
-const AVAILABLE_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class App extends Component {
-  handleKeyClick = (letter, feedback) => {
-    console.log (`Clic sur la lettre ${letter} en position ${feedback}`); 
+  handleKeyClick = (letter, feedback, index) => {
+    console.log (`Clic sur la lettre ${letter} à l'index ${index} en position ${feedback}`); 
   }
 
   render() {
@@ -43,38 +42,31 @@ class App extends Component {
           word = 'Exemple'
         />
 
-      <div className="keyboard">
-      { Array.from(keysArray[0]).map((letter) => (    
-        <Key
-        key={letter}
-        letter={letter} 
-        feedback="unclicked"
-        clickEvent={this.handleKeyClick}
-        />
-        ))
-      }
-      </div>
-      <div className="keyboard">
-      {
-        Array.from(keysArray[1]).map((letter) => (    
+        <div className="keyboard">
+        { Array.from(keysArray[0]).map((letter, index) => (    
           <Key
           key={letter}
+          index={index}
           letter={letter} 
           feedback="unclicked"
           clickEvent={this.handleKeyClick}
           />
           ))
         }
-      </div>
-        {/*<Keyboard 
-          keyList = {keysArray[0]}
-          keysClickEvent={this.handleKeyClick}
-        />
-        <Keyboard 
-          keyList = {keysArray[1]}
-          keysClickEvent={this.handleKeyClick}
-        />
-        */}
+        </div>
+        <div className="keyboard">
+        {
+          Array.from(keysArray[1]).map((letter, index) => (    
+            <Key
+            key={letter}
+            index={index+13}
+            letter={letter} 
+            feedback="unclicked"
+            clickEvent={this.handleKeyClick}
+            />
+            ))
+          }
+        </div>
       </div>
 
     );
