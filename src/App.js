@@ -13,8 +13,8 @@ const NB_ATTEMPTS = 10;
 class App extends Component {
   state = {
     nbErrors: 0,
-    triedIndices: [],
-    goodIndicies: [],
+    triedIndices: [2,5,8,12,15,22,1, 4,9,14],
+    goodIndices: [2,5,12,14],
   }
 
   handleKeyClick = (letter, feedback, index) => {
@@ -29,9 +29,9 @@ class App extends Component {
 
   /**
    * Afficher les buttons correspondant aux lettres
-   * 
+   * s
    */
-  getFeedbackForKey() {
+  getFeedbackForKey(index) {
     /* 
       Si l'index de la key est dans triedKeys:
         - Si l'index est dans goodKeys
@@ -41,7 +41,19 @@ class App extends Component {
       Sinon
         -> return "unclicked"
     */
-  }
+   const {triedIndices, goodIndices} = this.state;
+
+    for (var val1 in triedIndices) {
+        if (index === triedIndices[val1]) {
+            for (var val2 in goodIndices) {
+                if (index === goodIndices[val2]) 
+                    return 'success';
+            }
+            return 'failure';
+        }
+    }
+    return 'unclicked';
+}
 
   render() {
     const keysArray = ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ']
@@ -71,14 +83,15 @@ class App extends Component {
         />
 
         <div className="keyboard">
-        { Array.from(keysArray[0]).map((value, index) => (    
-          <Key
-          key={value}
-          index={index}
-          letter={value} 
-          feedback="unclicked"
-          clickEvent={this.handleKeyClick}
-          />
+        { 
+          Array.from(keysArray[0]).map((value, index) => (    
+            <Key
+            key={index}
+            index={index}
+            letter={value} 
+            feedback={this.getFeedbackForKey(index)}
+            clickEvent={this.handleKeyClick}
+            />
           ))
         }
         </div>
@@ -86,10 +99,10 @@ class App extends Component {
         {
           Array.from(keysArray[1]).map((value, index) => (    
             <Key
-            key={value}
+            key={index+13}
             index={index+13}
             letter={value} 
-            feedback="unclicked"
+            feedback={this.getFeedbackForKey(index+13)}
             clickEvent={this.handleKeyClick}
             />
             ))
