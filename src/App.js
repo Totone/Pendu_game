@@ -13,11 +13,15 @@ const NB_ATTEMPTS = 10;
 class App extends Component {
   state = {
     nbErrors: 0,
-    triedIndices: [2,5,8,12,15,22,1, 4,9,14],
-    goodIndices: [2,5,12,14],
+    triedIndices: [2,5,8,12,15,23, 22,1, 4,9,14],
+    goodIndices: [2,5,12,14, 23],
+    triedLetters: ['B', 'L', 'E', 'U', 'X'],
+    goodLetters: ['B', 'L', 'E', 'S'],
+    keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
   }
 
   handleKeyClick = (letter, feedback, index) => {
+      const {triedIndices, goodIndices, goodLetters, triedLetters, nbErrors} = this.state;
     console.log (`Clic sur la lettre ${letter} à l'index ${index} en position ${feedback}`); 
   /*
     Si index est dans triedKeys
@@ -25,28 +29,31 @@ class App extends Component {
     Sinon
       triedKeys.push(index)
   */
+
+    if (feedback === 'unclicked') {
+
+        const newArray = triedLetters;
+        newArray.push(letter);
+        this.setState({triedLetters: newArray});
+        
+        for (var val in goodIndices) {
+            if (letter === goodIndices[val]) {
+
+            }
+        }
+    }
   }
 
   /**
    * Afficher les buttons correspondant aux lettres
-   * s
    */
-  getFeedbackForKey(index) {
-    /* 
-      Si l'index de la key est dans triedKeys:
-        - Si l'index est dans goodKeys
-          -> return "success"
-        -> Sinon
-          -> return "failure"
-      Sinon
-        -> return "unclicked"
-    */
-   const {triedIndices, goodIndices} = this.state;
+  getFeedbackForKey(letter, index) {
+   const {triedIndices, goodIndices, triedLetters, goodLetters} = this.state;
 
-    for (var val1 in triedIndices) {
-        if (index === triedIndices[val1]) {
-            for (var val2 in goodIndices) {
-                if (index === goodIndices[val2]) 
+    for (var val1 in triedLetters) {
+        if (letter === triedLetters[val1]) {
+            for (var val2 in goodLetters) {
+                if (letter === goodLetters[val2]) 
                     return 'success';
             }
             return 'failure';
@@ -56,7 +63,7 @@ class App extends Component {
 }
 
   render() {
-    const keysArray = ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ']
+    const { keysArray } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -79,7 +86,7 @@ class App extends Component {
         />
 
         <Expression 
-          word = 'Exemple'
+          word = 'Exemples'
         />
 
         <div className="keyboard">
@@ -89,10 +96,10 @@ class App extends Component {
             key={index}
             index={index}
             letter={value} 
-            feedback={this.getFeedbackForKey(index)}
+            feedback={this.getFeedbackForKey(value, index)}
             clickEvent={this.handleKeyClick}
             />
-          ))
+          ))//
         }
         </div>
         <div className="keyboard">
@@ -102,7 +109,7 @@ class App extends Component {
             key={index+13}
             index={index+13}
             letter={value} 
-            feedback={this.getFeedbackForKey(index+13)}
+            feedback={this.getFeedbackForKey(value, index+13)}
             clickEvent={this.handleKeyClick}
             />
             ))
