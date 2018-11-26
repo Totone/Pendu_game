@@ -5,10 +5,11 @@ import Letter from './Letter';
 const Expression = ({word}) => (
     <div className="expression">
         {
-            Array.from(word).map((letter, index) => (
+            Array.from(word).map((letter, index, feedbackFunc) => (
                 <Letter
                     key={index}
                     letter={letter}
+                    feedback={feedbackFunc}
                 />
             ))
         }
@@ -16,7 +17,8 @@ const Expression = ({word}) => (
 )
 
 Expression.propTypes = {
-    word: PropTypes.string.isRequired
+    word: PropTypes.string.isRequired,
+    feedbackFunc: PropTypes.func.isRequired,
 }
 
 export default Expression;
