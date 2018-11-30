@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import shuffle from 'lodash.shuffle';
-
 import Screen from './Screen';
 import './Keyboard.css';
 import Key from './Key';
@@ -19,7 +17,7 @@ const WORDS = [
     'BAZAR', 
     'DJORKAEFF']
 
-class App extends Component {    
+class App extends Component {   
     state = {
         nbErrors: 0,
         triedLetters: ['S', 'X'],
@@ -59,7 +57,7 @@ class App extends Component {
      * - état du jeu (gagné?perdu?) à la fin
      *      appeler une nouvelle fonction et faire tous les bails de vérif
      */
-    handleKeyClick = (letter, feedback, index) => {
+    handleKeyClick = (letter, feedback) => {
         const { goodLetters, triedLetters, nbErrors } = this.state;
 
         if (feedback === 'unclicked') {
@@ -169,10 +167,9 @@ class App extends Component {
                     { 
                         Array.from(keysArray[0]).map((value, index) => (    
                             <Key
-                            key={index}
-                            index={index}
+                            key={value}
                             letter={value} 
-                            feedback={this.getFeedbackForKey(value, index)}
+                            feedback={this.getFeedbackForKey(value)}
                             clickEvent={this.handleKeyClick}
                             />
                         ))
@@ -182,10 +179,9 @@ class App extends Component {
                     {
                         Array.from(keysArray[1]).map((value, index) => (    
                             <Key
-                            key={index+13}
-                            index={index+13}
+                            key={value}
                             letter={value} 
-                            feedback={this.getFeedbackForKey(value, index+13)}
+                            feedback={this.getFeedbackForKey(value)}
                             clickEvent={this.handleKeyClick}
                         />
                         ))

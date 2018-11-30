@@ -5,7 +5,7 @@ import './Key.css'
 const Key = ({letter, index, feedback, clickEvent}) => (
     <span 
         className={`key-${feedback}`}
-        onClick={() => clickEvent(letter, feedback, index)}
+        onClick={() => clickEvent(letter, feedback)}
     >
         {letter}
     </span>
@@ -13,7 +13,6 @@ const Key = ({letter, index, feedback, clickEvent}) => (
 
 Key.propTypes = {
     letter: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
     feedback: PropTypes.oneOf([
         'unclicked',
         'success',
