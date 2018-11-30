@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Popup from 'reactjs-popup';
 import logo from './logo.svg';
 import './App.css';
 
@@ -15,37 +16,69 @@ const WORDS = [
     'TOXICO', 
     'PHILANTROPIQUE', 
     'BAZAR', 
-    'DJORKAEFF']
+    'ZIDAAAANE',
+    'FOLKLORE', 
+    'PARASITE', 
+    'GENIE'
+]
 
 class App extends Component {   
-    state = {
-        nbErrors: 0,
-        triedLetters: ['S', 'X'],
-        goodLetters: ['B', 'L', 'E', 'S'],
-        keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
-        actualWord: 'ZEUBI'
+    constructor(props) {
+        super(props);
+        const newWord = WORDS[Math.ceil(Math.random()*WORDS.length)];
+
+        this.state = {
+            nbErrors: 0,
+            triedLetters: [],
+            goodLetters: Array.from(newWord),
+            keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
+        }
     }
 
+    /**
+     * Réinitialiser le state en cas de victoire ou de défaite
+     */
     initState() {
-        const newWord = WORDS[Math.ceil(Math.random*100*WORDS.length)];
+        const newWord = WORDS[Math.ceil(Math.random()*WORDS.length)];
         const arrayWord = Array.from(newWord);
         this.setState({
             nbErrors: 0,
             triedLetters: [],
             goodLetters: arrayWord,
-            keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
-            actualWord: newWord
             }); 
             
     }
 
     /**
-     * Transformer l'expression à trouver en tableau
-     */ 
-    getGoodLettersArray(expression) {
-        return Array.from(expression);
-    }
+     * Vérifier l'état du jeu
+     * Envoie une popup qui dit si t'as perdu ou gagné selon le cas
+     * 
+     * 3 cas
+     *      Le nombre d'erreurs est supérieur ou égal à 10
+     *          Faire une popup pour dire "perdu"
+     *      On vérifie pour chaque letter si sa valeur est dans triedLetters
+     *          Si c'est bon on fait une popup pour dire "gagné"
+     *      Sinon ya R on continue
+     */
+    isFinished() {
+        const {nbErrors, triedLetters, goodLetters} = this.state;
+        if (nbErrors >= 10) {
+            return 'LOSE';
+        }
+        
+        let valid = 0;
+        for (var x in goodLetters) {
+            for(var y in triedLetters) {
+                if (goodLetters[x] === triedLetters[y]) {
+                    valid++;
+                }
+            }
+        }
 
+        if (valid === goodLetters.length) {
+            return 'WIN';
+        }
+    }
     /**
      * Réaction au clic d'une key
      * 
@@ -61,24 +94,27 @@ class App extends Component {
         const { goodLetters, triedLetters, nbErrors } = this.state;
 
         if (feedback === 'unclicked') {
-
+            // ajout de la lettre à triedLetters[]
             const newArray = triedLetters;
             newArray.push(letter);
-            //let newErrors = nbErrors;
 
+            // vérif si la lettre est bonne ou pas
             let isGood = false;
             for (var id in goodLetters){
                 if (letter === goodLetters[id])
                 isGood = true;
             }
+            // ajout d'une erreur si nécessaire
             const newErrors = isGood ? nbErrors : nbErrors + 1;
 
+            // setState
             this.setState({
                 triedLetters: newArray.sort(),
                 nbErrors: newErrors,
             });
 
             console.log(triedLetters, newErrors)
+            //this.isFinished();
         }
     }
 
@@ -153,7 +189,7 @@ class App extends Component {
 
                 <div className="expression">
                     {
-                        Array.from(this.state.actualWord).map((letter, index, feedbackFunc) => (
+                        this.state.goodLetters.map((letter, index) => (
                             <Letter
                               key={index}
                               letter={letter}
@@ -165,7 +201,7 @@ class App extends Component {
 
                 <div className="keyboard">
                     { 
-                        Array.from(keysArray[0]).map((value, index) => (    
+                        Array.from(keysArray[0]).map((value) => (    
                             <Key
                             key={value}
                             letter={value} 
@@ -177,7 +213,7 @@ class App extends Component {
                 </div>
                 <div className="keyboard">
                     {
-                        Array.from(keysArray[1]).map((value, index) => (    
+                        Array.from(keysArray[1]).map((value) => (    
                             <Key
                             key={value}
                             letter={value} 
