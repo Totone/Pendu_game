@@ -112,8 +112,23 @@ class App extends Component {
 
     /**
      * Donner le feedback de chaque lettre du mot à trouver
+     * 
+     * 2 possibilités
+     *      La lettre est dans triedLetters[]
+     *          return "known"
+     *      La lettre n'y est pas
+     *          return "unknown"
      */
-    getFeedbackForLetter
+    getFeedbackForLetter(letter) {
+        const {triedLetters} = this.state;
+
+        for (var value in triedLetters) {
+            if (letter === triedLetters[value]) {
+                return "known";
+            }
+        }
+        return "unknown";
+    }
 
     render() {
         const { keysArray } = this.state;
@@ -144,7 +159,7 @@ class App extends Component {
                             <Letter
                               key={index}
                               letter={letter}
-                              feedback={feedbackFunc}
+                              feedback={this.getFeedbackForLetter(letter)}
                             />
                         ))
                     }
