@@ -1,9 +1,18 @@
+.keyboard {
+    margin: 2em;
+}
+
 .key-success, .key-failure, .key-unclicked {
     border: 1px solid black;
     margin: 0.1em;
     padding: 0.2em;
     font-weight: bold;
     font-size: 2em;
+
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
 }
 
 .key-unclicked, .restart {
