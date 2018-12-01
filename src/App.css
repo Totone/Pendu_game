@@ -40,3 +40,16 @@
     transform: rotate(360deg);
   }
 }
+
+h1 {
+  font-size: 2em;
+}
+
+@media screen and (min-width: 900px) {
+  #wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+}

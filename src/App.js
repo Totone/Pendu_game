@@ -25,10 +25,11 @@ const WORDS = [
 class App extends Component {   
     constructor(props) {
         super(props);
-        const newWord = WORDS[Math.ceil(Math.random()*WORDS.length)];
+        const newWord = WORDS[Math.floor(Math.random()*WORDS.length)];
 
         this.state = {
             nbErrors: 0,
+            gameState: 'PLAY',
             triedLetters: [],
             goodLetters: Array.from(newWord),
             keysArray: ['ABCDEFGHIJKLM', 'NOPQRSTUVWXYZ'],
@@ -38,13 +39,14 @@ class App extends Component {
     /**
      * Réinitialiser le state en cas de victoire ou de défaite
      */
-    initState() {
-        const newWord = WORDS[Math.ceil(Math.random()*WORDS.length)];
+    initState = () => {
+        const newWord = WORDS[Math.floor(Math.random()*WORDS.length)];
         const arrayWord = Array.from(newWord);
         this.setState({
             nbErrors: 0,
             triedLetters: [],
             goodLetters: arrayWord,
+            gameState: 'PLAY',
             }); 
             
     }
@@ -63,10 +65,11 @@ class App extends Component {
     isFinished() {
         const {nbErrors, triedLetters, goodLetters} = this.state;
         if (nbErrors >= 10) {
-            return 'LOSE';
+            this.setState({gameState: 'LOSE'});
+            alert("T'as perdu t'es nul");
         }
         
-        let valid = 0;
+        var valid = 0;
         for (var x in goodLetters) {
             for(var y in triedLetters) {
                 if (goodLetters[x] === triedLetters[y]) {
@@ -74,9 +77,10 @@ class App extends Component {
                 }
             }
         }
-
+        console.log(`${valid} réussites sur ${goodLetters.length}`);
         if (valid === goodLetters.length) {
-            return 'WIN';
+            this.setState({gameState: 'WIN'});
+            alert("T'as gagné t'es trop fort");
         }
     }
     /**
@@ -91,9 +95,9 @@ class App extends Component {
      *      appeler une nouvelle fonction et faire tous les bails de vérif
      */
     handleKeyClick = (letter, feedback) => {
-        const { goodLetters, triedLetters, nbErrors } = this.state;
+        const { gameState, goodLetters, triedLetters, nbErrors } = this.state;
 
-        if (feedback === 'unclicked') {
+        if (gameState === 'PLAY' && feedback === 'unclicked') {
             // ajout de la lettre à triedLetters[]
             const newArray = triedLetters;
             newArray.push(letter);
@@ -113,8 +117,8 @@ class App extends Component {
                 nbErrors: newErrors,
             });
 
-            console.log(triedLetters, newErrors)
-            //this.isFinished();
+            console.log(triedLetters, this.state.nbErrors)
+            this.isFinished();
         }
     }
 
@@ -165,7 +169,7 @@ class App extends Component {
     }
 
     render() {
-        const { keysArray } = this.state;
+        const { keysArray, nbErrors, goodLetters, gameState } = this.state;
         return (
             <div className="App">
                 <header className="App-header">
@@ -182,47 +186,63 @@ class App extends Component {
                     </p>
                 </header>
 
-                <Screen
-                  nbAttempts={NB_ATTEMPTS} 
-                  nbErrors={this.state.nbErrors}
-                />
+                <h1>Trouvez le bon mot !</h1>
 
-                <div className="expression">
-                    {
-                        this.state.goodLetters.map((letter, index) => (
-                            <Letter
-                              key={index}
-                              letter={letter}
-                              feedback={this.getFeedbackForLetter(letter)}
-                            />
-                        ))
-                    }
-                </div>
-
-                <div className="keyboard">
-                    { 
-                        Array.from(keysArray[0]).map((value) => (    
-                            <Key
-                            key={value}
-                            letter={value} 
-                            feedback={this.getFeedbackForKey(value)}
-                            clickEvent={this.handleKeyClick}
-                            />
-                        ))
-                    }
-                </div>
-                <div className="keyboard">
-                    {
-                        Array.from(keysArray[1]).map((value) => (    
-                            <Key
-                            key={value}
-                            letter={value} 
-                            feedback={this.getFeedbackForKey(value)}
-                            clickEvent={this.handleKeyClick}
+                <article id="wrapper">
+                    <section>
+                        <Screen
+                        nbAttempts={NB_ATTEMPTS} 
+                        nbErrors={nbErrors}
+                        gameState={gameState}
                         />
-                        ))
-                    }
-                </div>
+
+                        <div className="expression">
+                            {
+                                goodLetters.map((letter, index) => (
+                                    <Letter
+                                    key={index}
+                                    letter={letter}
+                                    feedback={this.getFeedbackForLetter(letter)}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </section>
+                    
+                    <section>
+                        <div className="keyboard">
+                            { 
+                                Array.from(keysArray[0]).map((value) => (    
+                                    <Key
+                                    key={value}
+                                    letter={value} 
+                                    feedback={this.getFeedbackForKey(value)}
+                                    clickEvent={this.handleKeyClick}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <div className="keyboard">
+                            {
+                                Array.from(keysArray[1]).map((value) => (    
+                                    <Key
+                                    key={value}
+                                    letter={value} 
+                                    feedback={this.getFeedbackForKey(value)}
+                                    clickEvent={this.handleKeyClick}
+                                />
+                                ))
+                            }
+                        </div>
+                        
+                        <button 
+                        className={gameState === 'PLAY' ? 'restart' : 'restartFinished'}
+                        onClick={this.initState}
+                        >
+                            Recommencer
+                        </button>
+                    </section>
+                </article>
             </div>
         );
     }

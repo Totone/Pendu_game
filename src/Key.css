@@ -6,16 +6,53 @@
     font-size: 2em;
 }
 
-.key-unclicked {
+.key-unclicked, .restart {
     color: darkgrey;
     background-color: rgb(73, 73, 73);
 }
 
 .key-success {
+    border: 1px solid rgb(222, 255, 209);
     color: green;
     background-color: darkgrey;
 }
 .key-failure {
+    border: 1px solid rgb(255, 209, 209);
     color: rgb(139, 0, 0);
     background-color: darkgrey;
+}
+
+.restart {
+    border: 1px solid black;
+    margin: 0.1em;
+    padding: 0.2em;
+    font-size: 1.5em;
+}
+
+.restart:hover {
+    color: rgb(73, 73, 73);
+    background-color: darkgrey;
+}
+
+@keyframes restartAnim {
+    0% {
+        color: rgb(0, 161, 224);
+        background-color: rgb(191, 201, 207);
+    }
+    50% {
+        color: rgb(191, 201, 207);;
+        background-color: rgb(0, 161, 224);
+    }
+    100% {
+        color: rgb(0, 161, 224);
+        background-color: rgb(191, 201, 207);;
+    }
+}
+
+.restartFinished {
+    border: 1px solid rgb(191, 201, 207);
+    margin: 0.1em;
+    padding: 0.2em;
+    font-size: 1.5em;
+    animation: restartAnim 4s infinite;
 }

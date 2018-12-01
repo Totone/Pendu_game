@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import './Key.css'
 
-const Key = ({letter, index, feedback, clickEvent}) => (
+const Key = ({letter, feedback, clickEvent}) => (
     <span 
         className={`key-${feedback}`}
         onClick={() => clickEvent(letter, feedback)}
